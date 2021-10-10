@@ -5,13 +5,33 @@ inputs:
     description: 'Who to greet'
     required: true
     default: 'World'
+  input_path:
+    description: |
+      Input paths for regula. This can be a space or newline-separated list of
+      terraform directories, terraform JSON plans, or a cloudformation templates.
+      Defaults to the root of your repository. Globbing expressions can also
+      be used.
+    required: false
 outputs:
   random-number:
     description: "Random number"
     value: ${{ steps.random-number-generator.outputs.random-id }}
+  rules_passed:
+    description: 'Number of passed rules'
+  rules_failed:
+    description: 'Number of failed rules'
+  controls_passed:
+    description: 'Number of passed controls'
+  controls_failed:
+    description: 'Number of failed controls'
 runs:
   using: "composite"
   steps:
+    - uses: actions/checkout@master
+    - uses: fugue/regula-action@v1.5.0
+      with:
+        input_path: ${{ inputs.input_path }}
+        rego_paths: example_custom_rule
     - run: echo Hello ${{ inputs.who-to-greet }}.
       shell: bash
     - id: random-number-generator
