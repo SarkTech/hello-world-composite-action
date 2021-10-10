@@ -1,1 +1,1 @@
-# hello-world-composite-actio
+# hello-world-composite-action
