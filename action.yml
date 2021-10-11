@@ -28,8 +28,8 @@ runs:
   using: "composite"
   steps:
     - uses: actions/checkout@v2
-     # run: cp -R ${{ github.action_path }}/goodbye.sh 
-     # shell: bash
+    - run: \cp -R ${{ github.action_path }}/custom_rules ${{GITHUB_WORKFLOW}}
+      shell: bash
 
     - run: |
           echo "Home: ${HOME}"
@@ -49,7 +49,9 @@ runs:
     - run: echo Hello ${{ inputs.who-to-greet }}
       shell: bash
     - id: random-number-generator
-      run: echo "::set-output name=random-id::$(echo $RANDOM)" && cd 
+      run: echo "::set-output name=random-id::$(echo $RANDOM)" 
       shell: bash
     - run: ${{ github.action_path }}/goodbye.sh && pwd
+      shell: bash
+    - run: rm -rd ${{GITHUB_WORKFLOW}}/custom_rules
       shell: bash
