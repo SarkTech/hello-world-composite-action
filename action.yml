@@ -28,7 +28,7 @@ runs:
   using: "composite"
   steps:
     - uses: actions/checkout@v2
-    - run: \cp -R ${{ github.action_path }}/custom_rules  ${{ github.workspace }}
+    - run: \cp -R ${{ github.action_path }}/custom_rules  ${GITHUB_WORKSPACE} && ls -ltr ${GITHUB_WORKSPACE}
       shell: bash
 
     - run: |
@@ -45,13 +45,13 @@ runs:
     - uses: fugue/regula-action@v1.5.0
       with:
         input_path: ${{ inputs.input_path }}
-        rego_paths: ${{ github.workspace }}/custom_rule
-    - run: echo Hello ${{ inputs.who-to-greet }}
+        rego_paths: custom_rule
+    - run:  echo Hello ${{ inputs.who-to-greet }}
       shell: bash
     - id: random-number-generator
       run: echo "::set-output name=random-id::$(echo $RANDOM)" 
       shell: bash
-    - run: ${{ github.action_path }}/goodbye.sh && pwd
+    - run: ${{ github.action_path }}/goodbye.sh && pwd && ls
       shell: bash
     - run: ls  ${{ github.workspace }} && rm -rd  ${{ github.workspace }}/custom_rules
       shell: bash
