@@ -32,9 +32,6 @@ runs:
       with:
         input_path: ${{ inputs.input_path }}
         rego_paths: ${{ github.action_path }}/example_custom_rule
-       with:
-        input_path: infra_tf
-        rego_paths: example_custom_rule
     - run: echo Hello ${{ inputs.who-to-greet }}
       shell: bash
     - id: random-number-generator
