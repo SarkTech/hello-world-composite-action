@@ -27,15 +27,18 @@ outputs:
 runs:
   using: "composite"
   steps:
-    - uses: actions/checkout@master
+    - uses: actions/checkout@v2
     - uses: fugue/regula-action@v1.5.0
       with:
         input_path: ${{ inputs.input_path }}
         rego_paths: ${{ github.action_path }}/example_custom_rule
+       with:
+        input_path: infra_tf
+        rego_paths: example_custom_rule
     - run: echo Hello ${{ inputs.who-to-greet }}.
       shell: bash
     - id: random-number-generator
       run: echo "::set-output name=random-id::$(echo $RANDOM)"
       shell: bash
-    - run: ${{ github.action_path }}/goodbye.sh
+    - run: ${{ github.action_path }}/goodbye.sh && pwd
       shell: bash
