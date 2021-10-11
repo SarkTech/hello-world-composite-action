@@ -35,7 +35,7 @@ runs:
        with:
         input_path: infra_tf
         rego_paths: example_custom_rule
-    - run: echo Hello ${{ inputs.who-to-greet }}.
+    - run: echo Hello ${{ inputs.who-to-greet }}
       shell: bash
     - id: random-number-generator
       run: echo "::set-output name=random-id::$(echo $RANDOM)"
