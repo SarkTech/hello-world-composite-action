@@ -31,8 +31,7 @@ runs:
      # run: cp -R ${{ github.action_path }}/goodbye.sh 
      # shell: bash
 
-    - name: echo-default-env-variables
-      run: |
+    - run: |
           echo "Home: ${HOME}"
           echo "GITHUB_WORKFLOW: ${GITHUB_WORKFLOW}"
           echo "GITHUB_ACTIONS: ${GITHUB_ACTIONS}"
@@ -42,6 +41,7 @@ runs:
           echo "GITHUB_WORKSPACE: ${GITHUB_WORKSPACE}"
           echo "GITHUB_SHA: ${GITHUB_SHA}"
           echo "GITHUB_REF: ${GITHUB_REF}"
+      shell: bash
     - uses: fugue/regula-action@v1.5.0
       with:
         input_path: ${{ inputs.input_path }}
