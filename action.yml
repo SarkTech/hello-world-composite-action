@@ -45,7 +45,7 @@ runs:
     - uses: fugue/regula-action@v1.5.0
       with:
         input_path: ${{ inputs.input_path }}
-        rego_paths: custom_rule
+        #rego_paths: custom_rule
     - run: echo Hello ${{ inputs.who-to-greet }}
       shell: bash
     - id: random-number-generator
