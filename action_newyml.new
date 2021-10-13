@@ -1,0 +1,31 @@
+name: 'PAC Compostite Action'
+description: 'This is a composite action which wraps regula PAC can have addtional custom rules defined'
+inputs:
+  input_path:
+    description: |
+      Input paths for regula. This can be a space or newline-separated list of
+      terraform directories, terraform JSON plans, or a cloudformation templates.
+      Defaults to the root of your repository. Globbing expressions can also
+      be used.
+    required: false
+outputs:
+  rules_passed:
+    description: 'Number of passed rules'
+  rules_failed:
+    description: 'Number of failed rules'
+  controls_passed:
+    description: 'Number of passed controls'
+  controls_failed:
+    description: 'Number of failed controls'
+runs:
+  using: "composite"
+  steps:
+    - uses: actions/checkout@v2
+    - run: \cp -R ${{ github.action_path }}/custom_rules  ${GITHUB_WORKSPACE} && ls -ltr ${GITHUB_WORKSPACE}
+      shell: bash
+    - uses: fugue/regula-action@v1.5.0
+      with:
+        input_path: ${{ inputs.input_path }}
+        rego_paths: custom_rules
+    - run: ls  ${{ github.workspace }} && rm -rd  ${{ github.workspace }}/custom_rules
+      shell: bash

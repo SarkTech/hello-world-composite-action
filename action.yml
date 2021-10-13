@@ -1,6 +1,10 @@
-name: 'PAC Compostite Action'
-description: 'This is a composite action which wraps regula PAC can have addtional custom rules defined'
+name: 'Hello World'
+description: 'Greet someone'
 inputs:
+  who-to-greet:  # id of input
+    description: 'Who to greet'
+    required: true
+    default: 'World'
   input_path:
     description: |
       Input paths for regula. This can be a space or newline-separated list of
@@ -9,6 +13,9 @@ inputs:
       be used.
     required: false
 outputs:
+  random-number:
+    description: "Random number"
+    value: ${{ steps.random-number-generator.outputs.random-id }}
   rules_passed:
     description: 'Number of passed rules'
   rules_failed:
@@ -23,9 +30,28 @@ runs:
     - uses: actions/checkout@v2
     - run: \cp -R ${{ github.action_path }}/custom_rules  ${GITHUB_WORKSPACE} && ls -ltr ${GITHUB_WORKSPACE}
       shell: bash
+
+    - run: |
+          echo "Home: ${HOME}"
+          echo "GITHUB_WORKFLOW: ${GITHUB_WORKFLOW}"
+          echo "GITHUB_ACTIONS: ${GITHUB_ACTIONS}"
+          echo "GITHUB_ACTOR: ${GITHUB_ACTOR}"
+          echo "GITHUB_REPOSITORY: ${GITHUB_REPOSITORY}"
+          echo "GITHUB_EVENT_NAME: ${GITHUB_EVENT_NAME}"
+          echo "GITHUB_WORKSPACE: ${GITHUB_WORKSPACE}"
+          echo "GITHUB_SHA: ${GITHUB_SHA}"
+          echo "GITHUB_REF: ${GITHUB_REF}"
+      shell: bash
     - uses: fugue/regula-action@v1.5.0
       with:
         input_path: ${{ inputs.input_path }}
         rego_paths: custom_rules
+    - run:  echo Hello ${{ inputs.who-to-greet }}
+      shell: bash
+    - id: random-number-generator
+      run: echo "::set-output name=random-id::$(echo $RANDOM)" 
+      shell: bash
+    - run: ${{ github.action_path }}/goodbye.sh && pwd && ls
+      shell: bash
     - run: ls  ${{ github.workspace }} && rm -rd  ${{ github.workspace }}/custom_rules
       shell: bash
